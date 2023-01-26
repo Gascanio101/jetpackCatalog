@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.example.jetpaccomposecatalog.ui.theme.JetpacComposeCatalogTheme
 
@@ -223,22 +224,48 @@ fun MyBox(name: String) {
 @Composable
 fun MyComplexLayout() {
     Column(modifier = Modifier.fillMaxSize()) {
-        Box(modifier = Modifier.background(Color.Cyan).fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier
+            .background(Color.Cyan)
+            .fillMaxWidth()
+            .weight(1f), contentAlignment = Alignment.Center) {
             Text("Example 1")
         }
-        Row(modifier = Modifier.fillMaxWidth().weight(1f)) {
-            Box(modifier = Modifier.background(Color.Red).fillMaxHeight().weight(1f), contentAlignment = Alignment.Center) {
+        MyHeightSpacer(size = 40)
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)) {
+            Box(modifier = Modifier
+                .background(Color.Red)
+                .fillMaxHeight()
+                .weight(1f), contentAlignment = Alignment.Center) {
                 Text("Example 2")
             }
-            Box(modifier = Modifier.background(Color.Green).fillMaxHeight().weight(1f), contentAlignment = Alignment.Center) {
+            Box(modifier = Modifier
+                .background(Color.Green)
+                .fillMaxHeight()
+                .weight(1f), contentAlignment = Alignment.Center) {
                 Text("Example 3")
             }
         }
-        Box(modifier = Modifier.background(Color.Magenta).fillMaxWidth().weight(1f), contentAlignment = Alignment.BottomCenter) {
+        MyHeightSpacer(size = 40)
+        Box(modifier = Modifier
+            .background(Color.Magenta)
+            .fillMaxWidth()
+            .weight(1f), contentAlignment = Alignment.BottomCenter) {
             Text("Example 4")
         }
     }
     Box(modifier = Modifier.fillMaxWidth())
+}
+
+@Composable
+fun MyHeightSpacer(size: Int) {
+    Spacer(modifier = Modifier.height(size.dp))
+}
+
+@Composable
+fun MyWidthSpacer(size: Int) {
+    Spacer(modifier = Modifier.width(size.dp))
 }
 
 @Preview(showBackground = true)
