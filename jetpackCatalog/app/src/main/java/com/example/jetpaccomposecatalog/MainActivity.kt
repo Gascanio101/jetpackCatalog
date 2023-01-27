@@ -14,7 +14,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.*
+//import androidx.compose.runtime. TODO: import this instead
+
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -325,8 +329,11 @@ fun MyStateExample() {
     // A different way to approach this, without the use of var.value
 
     // When performing the rememberSaveable, we save the data on each button tap, and if the activity restartes(i.e. screen rotation)
-    // In order for this to work, we need to manually import this on top of the file: 
+    // In order for this to work, we need to manually import this on top of the file:
     // import androidx.compose.runtime.*
+    // Or more correctly:
+    // import androidx.compose.runtime.setValue
+    // import androidx.compose.runtime.getValue
     var counter by rememberSaveable { mutableStateOf(0) }
 
     Column(
