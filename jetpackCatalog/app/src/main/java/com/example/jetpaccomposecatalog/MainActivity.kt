@@ -14,6 +14,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -305,17 +307,40 @@ fun MyBox(name: String) {
 @Preview
 @Composable
 fun MyStateExample() {
-    var counter = remember { mutableStateOf(0) }
+
+//    // When performing the rememberSaveable, we save the data on each button tap, and if the activity restartes(i.e. screen rotation)
+//    var counter = rememberSaveable { mutableStateOf(0) }
+//
+//    Column(
+//        Modifier.fillMaxSize(),
+//        verticalArrangement = Arrangement.Center,
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//        Button(onClick = { counter.value += 1 }) {
+//            Text("Pulsame")
+//        }
+//        Text("He sido pulsado ${counter.value} veces")
+//    }
+
+    // A different way to approach this, without the use of var.value
+
+    // When performing the rememberSaveable, we save the data on each button tap, and if the activity restartes(i.e. screen rotation)
+    // In order for this to work, we need to manually import this on top of the file: 
+    // import androidx.compose.runtime.*
+    var counter by rememberSaveable { mutableStateOf(0) }
+
     Column(
         Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = { counter.value += 1 }) {
+        Button(onClick = { counter += 1 }) {
             Text("Pulsame")
         }
-        Text("He sido pulsado ${counter.value} veces")
+        Text("He sido pulsado ${counter} veces")
     }
+
+
 }
 
 @Composable
