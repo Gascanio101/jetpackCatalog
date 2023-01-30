@@ -10,7 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.TextField
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +34,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MyText()
+//                    MyText()
+//                    MyTextField()
+                    MyTextFieldAdvance()
                 }
             }
         }
@@ -45,10 +48,31 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentCatalogTheme {
-        MyText()
+//        MyText()
+        MyTextFieldAdvance()
     }
 }
 
+@Composable
+fun MyTextFieldAdvance() {
+    var myText by remember { mutableStateOf("") }
+    TextField(
+        value = myText,
+        onValueChange = { myText = if(it.contains("a")) {
+            it.replace("a", "")
+        } else {
+            it
+        }},
+        label = { Text("Introduce tu nombre") })
+}
+
+@Composable
+fun MyTextField() {
+
+    // Importar import androidx.compose.runtime.* para que funcione
+    var myText by remember { mutableStateOf("") }
+    TextField(value = myText, onValueChange = { myText = it })
+}
 
 @Composable
 fun MyText() {
