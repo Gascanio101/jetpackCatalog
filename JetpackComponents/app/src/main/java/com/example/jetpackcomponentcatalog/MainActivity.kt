@@ -2,6 +2,7 @@ package com.example.jetpackcomponentcatalog
 
 import android.graphics.Color.green
 import android.os.Bundle
+import android.widget.CheckBox
 import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -52,7 +53,8 @@ class MainActivity : ComponentActivity() {
 //                        MyOutlinedTextField(myText) { myText = it }
 //                        MyButtonExample()
 //                        MyImageAdvanced()
-                        MyProgressBarAdvanced()
+//                        MyProgressBarAdvanced()
+                        MyCheckBox()
                     }
                 }
             }
@@ -65,7 +67,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentCatalogTheme {
-        MyProgressBarAdvanced()
+        MyCheckBox()
+//        MyProgressBarAdvanced()
 //        MyImageAdvanced()
 //        MyButtonExample()
 //        MyOutlinedTextField(name = "", onValueChanged = "")
@@ -73,8 +76,58 @@ fun DefaultPreview() {
 }
 
 @Composable
+fun MyCheckBox() {
+    var state by rememberSaveable { mutableStateOf(true) }
+
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.End
+    ) {
+        Checkbox(
+            checked = state, onCheckedChange = { state = !state }, colors = CheckboxDefaults.colors(
+                checkedColor = Color.Green,
+                uncheckedColor = Color.Red,
+                checkmarkColor = Color.Black
+            )
+        )
+    }
+}
+
+@Composable
 fun MySwitch() {
-    
+
+    var switchState by rememberSaveable { mutableStateOf(true) }
+
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.End
+    ) {
+
+        Switch(
+            checked = switchState,
+            onCheckedChange = { switchState = !switchState },
+            enabled = true,
+            colors = SwitchDefaults.colors(
+                uncheckedThumbColor = Color.Red,
+                uncheckedTrackAlpha = 0.3f,
+                uncheckedTrackColor = Color.Yellow,
+                checkedTrackColor = Color.Yellow,
+                checkedThumbColor = Color.Red,
+                checkedTrackAlpha = 0.8f,
+                disabledCheckedThumbColor = Color.DarkGray,
+                disabledCheckedTrackColor = Color.DarkGray,
+                disabledUncheckedThumbColor = Color.DarkGray,
+                disabledUncheckedTrackColor = Color.DarkGray
+            )
+        )
+    }
+
 }
 
 @Composable
