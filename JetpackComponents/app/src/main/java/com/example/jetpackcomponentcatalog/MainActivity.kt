@@ -2,17 +2,28 @@ package com.example.jetpackcomponentcatalog
 
 import android.graphics.Color.green
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.StarOutline
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -39,7 +50,9 @@ class MainActivity : ComponentActivity() {
 
                     Column {
 //                        MyOutlinedTextField(myText) { myText = it }
-                        MyButtonExample()
+//                        MyButtonExample()
+//                        MyImageAdvanced()
+                        MyProgressBarAdvanced()
                     }
                 }
             }
@@ -52,9 +65,100 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentCatalogTheme {
-        MyButtonExample()
+        MyProgressBarAdvanced()
+//        MyImageAdvanced()
+//        MyButtonExample()
 //        MyOutlinedTextField(name = "", onValueChanged = "")
     }
+}
+
+@Composable
+fun MySwitch() {
+    
+}
+
+@Composable
+fun MyProgressBarAdvanced() {
+
+    var myProgressCount by rememberSaveable { mutableStateOf(0.5f) }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator(progress = myProgressCount)
+
+        Row(Modifier.fillMaxWidth(), Arrangement.SpaceAround) {
+            Button(onClick = { myProgressCount += 0.1f }) {
+                Text("Button plus")
+            }
+            Button(onClick = { myProgressCount -= 0.1f }) {
+                Text("Button less")
+            }
+        }
+    }
+
+}
+
+@Composable
+fun MyProgressBar() {
+
+    var showLoading by rememberSaveable { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+
+        if (showLoading) {
+
+            CircularProgressIndicator(color = Color.Magenta, strokeWidth = 6.dp)
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .height(12.dp),
+                color = Color.Red, backgroundColor = Color.Black
+            )
+        }
+
+        Button(onClick = { showLoading = !showLoading }) {
+            Text("Cargar Perfil")
+        }
+    }
+}
+
+@Composable
+fun MyIcon() {
+
+    // To download the complete library from google resources, add this to gradle file implementation:
+    // implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    Icon(
+        imageVector = Icons.Outlined.StarOutline,
+        contentDescription = "Icon Star",
+        tint = Color.Blue
+    )
+}
+
+@Composable
+fun MyImageAdvanced() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_launcher_background),
+        contentDescription = "Advanced Example",
+        modifier = Modifier
+            .clip(RoundedCornerShape(25f))
+            .border(2.dp, Color.DarkGray, shape = RoundedCornerShape(25f))
+    )
+}
+
+@Composable
+fun MyImage() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_launcher_background),
+        contentDescription = "Ejemplo",
+        alpha = 0.5f
+    )
 }
 
 @Composable
@@ -72,9 +176,10 @@ fun MyButtonExample() {
 
     var enabled by rememberSaveable { mutableStateOf(true) }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(24.dp),
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -93,7 +198,8 @@ fun MyButtonExample() {
 
         MyVerticalSpacer(size = 12)
 
-        OutlinedButton(onClick = { enabled = false },
+        OutlinedButton(
+            onClick = { enabled = false },
             enabled = enabled,
             modifier = Modifier.width(120.dp),
             colors = ButtonDefaults.buttonColors(
@@ -101,7 +207,8 @@ fun MyButtonExample() {
                 contentColor = Color.Magenta,
                 disabledBackgroundColor = Color.LightGray,
                 disabledContentColor = Color.DarkGray
-            ), border = BorderStroke(3.dp, Color.Black),
+            ),
+            border = BorderStroke(3.dp, Color.Black),
 
             ) {
 
