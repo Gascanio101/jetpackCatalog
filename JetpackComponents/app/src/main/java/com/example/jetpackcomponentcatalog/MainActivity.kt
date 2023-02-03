@@ -4,12 +4,12 @@ import android.graphics.Color.green
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,10 +17,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetpackcomponentcatalog.ui.theme.JetpackComponentCatalogTheme
+import java.util.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +34,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+
+//                    var myText by remember { mutableStateOf("") }
+
                     Column {
-                        MyOutlinedTextField()
+//                        MyOutlinedTextField(myText) { myText = it }
+                        MyButtonExample()
                     }
                 }
             }
@@ -46,8 +52,70 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentCatalogTheme {
-        MyOutlinedTextField()
+        MyButtonExample()
+//        MyOutlinedTextField(name = "", onValueChanged = "")
     }
+}
+
+@Composable
+fun MyVerticalSpacer(size: Int) {
+    Spacer(modifier = Modifier.height(size.dp))
+}
+
+@Composable
+fun MyHorizontalSpacer(size: Int) {
+    Spacer(modifier = Modifier.width(size.dp))
+}
+
+@Composable
+fun MyButtonExample() {
+
+    var enabled by rememberSaveable { mutableStateOf(true) }
+
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(24.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(
+            onClick = { enabled = false },
+            enabled = enabled,
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Magenta,
+                contentColor = Color.Blue
+            ),
+            modifier = Modifier.width(120.dp),
+            border = BorderStroke(5.dp, Color.Green)
+        ) {
+            Text("Button!")
+        }
+
+        MyVerticalSpacer(size = 12)
+
+        OutlinedButton(onClick = { enabled = false },
+            enabled = enabled,
+            modifier = Modifier.width(120.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Cyan,
+                contentColor = Color.Magenta,
+                disabledBackgroundColor = Color.LightGray,
+                disabledContentColor = Color.DarkGray
+            ), border = BorderStroke(3.dp, Color.Black),
+
+            ) {
+
+            Text("Outlined")
+
+        }
+
+        MyVerticalSpacer(size = 12)
+
+        TextButton(onClick = { /*TODO*/ }) {
+            Text("TextButton")
+        }
+    }
+
 }
 
 @Composable
@@ -81,14 +149,6 @@ fun MyText() {
 }
 
 @Composable
-fun MyTextField() {
-
-    // Importar import androidx.compose.runtime.* para que funcione
-    var myText by remember { mutableStateOf("") }
-    TextField(value = myText, onValueChange = { myText = it })
-}
-
-@Composable
 fun MyTextFieldAdvanced() {
     var myText by remember { mutableStateOf("") }
     TextField(
@@ -104,11 +164,13 @@ fun MyTextFieldAdvanced() {
 }
 
 @Composable
-fun MyOutlinedTextField() {
-    var myText by remember { mutableStateOf("") }
+fun MyOutlinedTextField(name: String, onValueChanged: (String) -> Unit) {
+
     OutlinedTextField(
-        value = myText,
-        onValueChange = { myText = it },
+        value = name,
+        onValueChange = {
+            onValueChanged(it)
+        },
         modifier = Modifier.padding(24.dp),
         label = { Text(text = "Better Ui design, by Gabs") },
         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -119,3 +181,17 @@ fun MyOutlinedTextField() {
         )
     )
 }
+
+@Composable
+fun MyTextField(name: String, onValueChanged: (String) -> Unit) {
+
+    // This is not the most efficient way:
+    // The composable fun should avoid managing states, so we will recur to "State Hosting", as seen below:
+/*    // Importar import androidx.compose.runtime.* para que funcione
+    var myText by remember { mutableStateOf("") }
+    TextField(value = myText, onValueChange = { myText = it })*/
+
+    OutlinedTextField(value = name, onValueChange = { onValueChanged(it) })
+}
+
+
