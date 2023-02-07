@@ -16,8 +16,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -38,27 +40,20 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    // State management for RadioButton on a Parent-Level.
+                    var selected by rememberSaveable { mutableStateOf("Option 1") }
 
-                    val titleList = GetOptions(
-                        listOf(
-                            "Example 1 bueno",
-                            "Example 2",
-                            "Example 3",
-                            "Example 4",
-                            "Example 5"
-                        )
-                    )
-
-
+                    val titleList = GetOptions(listOf("Example 1", "Example 2", "Example 3"))
 
                     Column {
-//                        MyOutlinedTextField(myText) { myText = it }
-//                        MyButtonExample()
-//                        MyImageAdvanced()
-//                        MyProgressBarAdvanced()
-                        titleList.forEach {
-                            MyCheckBoxWithTextCompleted(it)
-                        }
+//                        MyTriStatusCheckbox()
+//                        titleList.forEach {
+//                            MyCheckBoxWithTextCompleted(it)
+//                        }
+
+//                        MyRadioButtonList(selected) { selected = it }
+
+                        MyCard()
                     }
                 }
             }
@@ -71,11 +66,91 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentCatalogTheme {
+        MyCard()
 //        MyCheckBox()
 //        MyProgressBarAdvanced()
 //        MyImageAdvanced()
 //        MyButtonExample()
 //        MyOutlinedTextField(name = "", onValueChanged = "")
+    }
+}
+
+@Composable
+fun MyCard() {
+    Card(
+        Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        elevation = 12.dp,
+        backgroundColor = Color.LightGray,
+        border = BorderStroke(2.dp, Color.DarkGray)
+    ) {
+        Column(
+            Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text = "Example 1")
+            Text(text = "Example 2")
+            Text(text = "Example 3")
+        }
+    }
+
+}
+
+@Composable
+fun MyRadioButton() {
+    RadioButton(
+        selected = false, onClick = { }, colors = RadioButtonDefaults.colors(
+            selectedColor = Color.Green,
+            unselectedColor = Color.Red,
+            disabledColor = Color.LightGray
+        )
+    )
+}
+
+@Composable
+fun MyRadioButtonList(option: String, onItemSelected: (String) -> Unit) {
+
+    Column(Modifier.fillMaxWidth()) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp), verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(selected = option == "Option 1", onClick = { onItemSelected("Option 1") })
+            MyHorizontalSpacer(size = 8)
+            Text("Option 1")
+        }
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp), verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(selected = option == "Option 2", onClick = { onItemSelected("Option 2") })
+            MyHorizontalSpacer(size = 8)
+            Text("Option 2")
+        }
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp), verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(selected = option == "Option 3", onClick = { onItemSelected("Option 3") })
+            MyHorizontalSpacer(size = 8)
+            Text("Option 3")
+        }
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp), verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(selected = option == "Option 4", onClick = { onItemSelected("Option 4") })
+            MyHorizontalSpacer(size = 8)
+            Text("Option 4")
+        }
     }
 }
 
@@ -92,12 +167,40 @@ fun GetOptions(titles: List<String>): List<CheckboxInfo> {
 }
 
 @Composable
+fun MyTriStatusCheckbox() {
+    var status by rememberSaveable { mutableStateOf(ToggleableState.Off) }
+    Row(
+        Modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+        TriStateCheckbox(state = status, onClick = {
+            status = when (status) {
+                ToggleableState.On -> {
+                    // Aqui se puede añadir logica para diferentes casos a traves de esta funcion lambda
+                    ToggleableState.Off
+                }
+                ToggleableState.Off -> ToggleableState.Indeterminate
+                ToggleableState.Indeterminate -> ToggleableState.On
+            }
+        })
+        MyVerticalSpacer(size = 8)
+        Text("Ejemplo Padre")
+    }
+
+}
+
+@Composable
 fun MyCheckBoxWithTextCompleted(checkboxInfo: CheckboxInfo) {
 
     Row(
-        Modifier.padding(8.dp),
+        Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Start
     ) {
         Checkbox(
             checked = checkboxInfo.selected,
