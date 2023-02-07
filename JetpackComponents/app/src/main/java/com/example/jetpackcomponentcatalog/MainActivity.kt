@@ -1,9 +1,6 @@
 package com.example.jetpackcomponentcatalog
 
-import android.graphics.Color.green
 import android.os.Bundle
-import android.widget.CheckBox
-import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -12,29 +9,24 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jetpackcomponentcatalog.ui.CheckboxInfo
 import com.example.jetpackcomponentcatalog.ui.theme.JetpackComponentCatalogTheme
-import java.util.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,14 +39,26 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
 
-//                    var myText by remember { mutableStateOf("") }
+                    val titleList = GetOptions(
+                        listOf(
+                            "Example 1 bueno",
+                            "Example 2",
+                            "Example 3",
+                            "Example 4",
+                            "Example 5"
+                        )
+                    )
+
+
 
                     Column {
 //                        MyOutlinedTextField(myText) { myText = it }
 //                        MyButtonExample()
 //                        MyImageAdvanced()
 //                        MyProgressBarAdvanced()
-                        MyCheckBox()
+                        titleList.forEach {
+                            MyCheckBoxWithTextCompleted(it)
+                        }
                     }
                 }
             }
@@ -67,11 +71,58 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentCatalogTheme {
-        MyCheckBox()
+//        MyCheckBox()
 //        MyProgressBarAdvanced()
 //        MyImageAdvanced()
 //        MyButtonExample()
 //        MyOutlinedTextField(name = "", onValueChanged = "")
+    }
+}
+
+@Composable
+fun GetOptions(titles: List<String>): List<CheckboxInfo> {
+    return titles.map {
+        var status by rememberSaveable { mutableStateOf(false) }
+        CheckboxInfo(
+            title = it,
+            selected = status,
+            onCheckedChange = { status = it }
+        )
+    }
+}
+
+@Composable
+fun MyCheckBoxWithTextCompleted(checkboxInfo: CheckboxInfo) {
+
+    Row(
+        Modifier.padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Checkbox(
+            checked = checkboxInfo.selected,
+            onCheckedChange = { checkboxInfo.onCheckedChange(!checkboxInfo.selected) })
+        MyVerticalSpacer(size = 8)
+        Text(checkboxInfo.title)
+    }
+}
+
+@Composable
+fun MyCheckBoxWithText() {
+
+    var state by rememberSaveable { mutableStateOf(false) }
+
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(8.dp)
+    ) {
+
+        Row(Modifier.padding(8.dp)) {
+            Checkbox(checked = state, onCheckedChange = { state = !state })
+            MyVerticalSpacer(size = 8)
+            Text("Ejercicio 1")
+        }
     }
 }
 
