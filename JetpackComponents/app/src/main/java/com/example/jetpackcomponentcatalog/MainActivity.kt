@@ -3,21 +3,20 @@ package com.example.jetpackcomponentcatalog
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key.Companion.D
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.TextStyle
@@ -29,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetpackcomponentcatalog.ui.CheckboxInfo
 import com.example.jetpackcomponentcatalog.ui.theme.JetpackComponentCatalogTheme
+import kotlin.math.exp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +53,8 @@ class MainActivity : ComponentActivity() {
 
 //                        MyRadioButtonList(selected) { selected = it }
 
-                        MyCard()
+//                        MyCard()
+                        MyDropDownMenu()
                     }
                 }
             }
@@ -66,12 +67,76 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentCatalogTheme {
-        MyCard()
+        MyDropDownMenu()
+//        MyCard()
 //        MyCheckBox()
 //        MyProgressBarAdvanced()
 //        MyImageAdvanced()
 //        MyButtonExample()
 //        MyOutlinedTextField(name = "", onValueChanged = "")
+    }
+}
+
+@Composable
+fun MyDropDownMenu() {
+    var selectedText by rememberSaveable { mutableStateOf("") }
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    val desserts = listOf("Helado", "Fruta", "Tarta de queso", "Brownie", "Gofres")
+
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(20.dp)
+    ) {
+        OutlinedTextField(
+            value = selectedText,
+            onValueChange = { selectedText = it },
+            enabled = false,
+            readOnly = true,
+            modifier = Modifier
+                .clickable { expanded = true }
+                .fillMaxWidth()
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            Modifier.fillMaxWidth()
+        ) {
+            desserts.forEach {
+                DropdownMenuItem(onClick = {
+                    selectedText = it
+                    expanded = false
+                }) {
+                    Text(it)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MyDivider() {
+    Divider(
+        Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp), color = Color.Red
+    )
+}
+
+// TODO: This component has been recently updated. Check again if needed
+@Composable
+fun MyBadgedBox() {
+    BadgedBox(
+        badge = { Text("2") },
+        Modifier
+            .padding(16.dp)
+            .background(Color.Red)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Star,
+            contentDescription = "",
+            Modifier.background(Color.Blue)
+        )
     }
 }
 
