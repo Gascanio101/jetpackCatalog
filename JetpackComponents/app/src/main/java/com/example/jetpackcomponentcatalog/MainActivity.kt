@@ -1,10 +1,14 @@
 package com.example.jetpackcomponentcatalog
 
+import android.graphics.Paint.Align
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -13,10 +17,15 @@ import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterEnd
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.key.Key.Companion.D
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.TextStyle
@@ -27,6 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetpackcomponentcatalog.ui.CheckboxInfo
+import com.example.jetpackcomponentcatalog.ui.components.*
+import com.example.jetpackcomponentcatalog.ui.model.Superhero
 import com.example.jetpackcomponentcatalog.ui.theme.JetpackComponentCatalogTheme
 import kotlin.math.exp
 
@@ -40,12 +51,23 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    // State management for RadioButton on a Parent-Level.
-                    var selected by rememberSaveable { mutableStateOf("Option 1") }
+                    SuperHeroView()
+                }
+            }
+        }
+    }
+}
 
-                    val titleList = GetOptions(listOf("Example 1", "Example 2", "Example 3"))
 
-                    Column {
+
+/*// State management for RadioButton on a Parent-Level.
+var selected by rememberSaveable { mutableStateOf("Option 1") }
+
+//                    val titleList = GetOptions(listOf("Example 1", "Example 2", "Example 3"))
+var showDialog by rememberSaveable { mutableStateOf(false) }*/
+
+/*
+                    Column(Modifier.fillMaxSize()) {
 //                        MyTriStatusCheckbox()
 //                        titleList.forEach {
 //                            MyCheckBoxWithTextCompleted(it)
@@ -54,14 +76,17 @@ class MainActivity : ComponentActivity() {
 //                        MyRadioButtonList(selected) { selected = it }
 
 //                        MyCard()
-                        MyDropDownMenu()
-                    }
-                }
-            }
-        }
-    }
-}
-
+//                        MyDropDownMenu()
+//                        MyComplexLayout()
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Button(onClick = { showDialog = !showDialog }, shape = RectangleShape) {
+                                Text("Show alert dialog")
+                            }
+//                            MyCustomDialog(showDialog, onDismiss = {showDialog = false})
+                            MyConfirmationDialog(showDialog) { showDialog = false }
+                        }
+                    }*/
+/**/
 
 @Preview(showBackground = true)
 @Composable
